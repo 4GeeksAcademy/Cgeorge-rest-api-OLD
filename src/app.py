@@ -101,6 +101,15 @@ def delete_people_favorite(people_id):
     db.session.commit()
     return jsonify({"msg": "Favorite removed"}), 200
 
+@app.route("/favorite/planet/<int:planet_id>", methods=["DELETE"])
+def delete_planet_favorite(planet_id):
+    user_id = 1  # Supongo que el ID de usuario es 1 para este ejemplo
+    fav = FavPlanets.query.filter_by(user_id=user_id, planet_id=planet_id).first()
+    if not fav:
+        return jsonify({"msg": "Not found"}), 404
+    db.session.delete(fav)
+    db.session.commit()
+    return jsonify({"msg": "Favorite removed"}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 3000)), debug=False)
